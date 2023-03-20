@@ -1,5 +1,5 @@
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import axios from 'axios';
 import {
   MainContainer,
@@ -18,8 +18,24 @@ function App() {
   const apiUrl="http://34.136.104.12:8000/api"
  const handleSubmit= async (messageText) => {
   axios.post(apiUrl, { msg: messageText }, { mode: 'no-cors' })
+ 
   .then(response => {
     if (response.status === 200) {
+     let message = response.data.res
+     let time = response.data.time
+     let newMessage = `${message} <br>${time}</br>`
+     const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+     let date = new Date().toLocaleString(options).replace(/[/]/g, '-');
+     let userMessage = `${messageText} <br>${date}</br>`
+        setMessages([...messages,{
+          message:userMessage,
+          direction:"outgoing"
+        },
+        {
+          message:newMessage
+        }
+      ])
+        setTyping(false);
       console.log(response.data);
     } else {
       console.error('Server returned an error:', response.status);
@@ -28,8 +44,6 @@ function App() {
   .catch(error => {
     console.error(error);
   });
-  
-  //  setMessages([...messages,{}])
       setTyping(true);
  }
 
