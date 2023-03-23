@@ -50,9 +50,8 @@ function App() {
   return (
     <div className="">
       <div className="header">
-        <p style={{ textAlign: "center" }}>GDSC Health Bot😃</p>
+        <p style={{ textAlign: "center" }}>Cheer Bot😃</p>
         <div className="btn">
-
         </div>
       </div>
       <div className="wrapper">
@@ -63,7 +62,7 @@ function App() {
                 scrollBehavior="smooth"
                 typingIndicator={
                   typing ? (
-                    <TypingIndicator content="GDSC Health Bot😃" />
+                    <TypingIndicator content="Cheer Bot😃" />
                   ) : null
                 }
               >
