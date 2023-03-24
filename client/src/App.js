@@ -1,5 +1,6 @@
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {  useState } from "react";
+import { useEffect } from "react";
 import axios from 'axios';
 import {
   MainContainer,
@@ -14,6 +15,10 @@ function App() {
   const [messages, setMessages] = useState([]);
 
   const [typing, setTyping] = useState(false);
+
+  const handleRefresh= () => {
+    setMessages([]);
+  }
 
   const apiUrl="http://34.136.104.12:8000/api"
  const handleSubmit= async (messageText) => {
@@ -45,15 +50,25 @@ function App() {
     console.error(error);
   });
       setTyping(true);
+
+      
+     
  }
+ 
 
   return (
     <div className="">
       <div className="header">
         <p style={{ textAlign: "center" }}>Cheer Bot😃</p>
-        <div className="btn">
-        </div>
       </div>
+      <div>
+      <div>
+      {/* Code to render messages */}
+      <button onClick={handleRefresh}>
+        <i className="fa fa-refresh" aria-hidden="true"></i>
+      </button>
+    </div>
+    </div>
       <div className="wrapper">
         <div className="box">
           <MainContainer>
