@@ -50,8 +50,6 @@ function App() {
     console.error(error);
   });
       setTyping(true);
-
-      
      
  }
  
