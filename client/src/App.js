@@ -1,6 +1,6 @@
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import {  useState } from "react";
-import { useEffect } from "react";
+import {  useState, useEffect, useRef } from "react";
+import Swal from 'sweetalert2'
 import axios from 'axios';
 import {
   MainContainer,
@@ -16,8 +16,48 @@ function App() {
 
   const [typing, setTyping] = useState(false);
 
+  const refreshButtonRef = useRef(null);
+
   const handleRefresh= () => {
     setMessages([]);
+  }
+
+   useEffect(() => {
+    // Add an event listener for the beforeunload event
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+     // Remove the event listener when the component unmounts
+     return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+    
+  },
+  []);
+
+const  handleBeforeUnload=(event) =>{
+
+  Swal.fire({
+    title: 'We respect your privacy, if you refresh this page all chat history will be cleared. Refresh?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      handleRefresh()
+      Swal.fire(
+        'Deleted!',
+        'Your Chats has been deleted.',
+        'success'
+      )
+    }
+  })
+
+ 
+    // Call the click method on the refresh button to trigger a refresh
+    refreshButtonRef.current.click();
   }
 
   const apiUrl="http://34.136.104.12:8000/api"
@@ -50,7 +90,7 @@ function App() {
     console.error(error);
   });
       setTyping(true);
-     
+    
  }
  
 
@@ -60,12 +100,6 @@ function App() {
         <p style={{ textAlign: "center" }}>Cheer Bot😃</p>
       </div>
       <div>
-      <div>
-      {/* Code to render messages */}
-      <button onClick={handleRefresh}>
-        <i className="fa fa-refresh" aria-hidden="true"></i>
-      </button>
-    </div>
     </div>
       <div className="wrapper">
         <div className="box">
