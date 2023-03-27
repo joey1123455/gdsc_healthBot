@@ -1,6 +1,7 @@
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {  useState, useEffect } from "react";
 import Swal from 'sweetalert2'
+
 import axios from 'axios';
 import {
   MainContainer,
@@ -15,8 +16,8 @@ function App() {
   const [messages, setMessages] = useState([]);
 
   const [typing, setTyping] = useState(false);
-
-   useEffect(() => {
+   
+  useEffect(() => {
     // Add an event listener for the beforeunload event
     window.addEventListener("beforeunload", handleBeforeUnload);
 
@@ -28,6 +29,8 @@ function App() {
   },
   []);
 
+
+ 
   const clearChats= () => {
     setMessages([]);
   }
@@ -84,9 +87,7 @@ const  handleBeforeUnload=(event) =>{
     console.error(error);
   });
       setTyping(true);
-    
  }
- 
 
   return (
     <div className="">
