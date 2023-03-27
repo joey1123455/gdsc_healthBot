@@ -1,7 +1,6 @@
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {  useState, useEffect } from "react";
 import Swal from 'sweetalert2'
-
 import axios from 'axios';
 import {
   MainContainer,
@@ -16,7 +15,10 @@ function App() {
   const [messages, setMessages] = useState([]);
 
   const [typing, setTyping] = useState(false);
-   
+  
+  const [location, setLocation] = useState(null);
+
+  
   useEffect(() => {
     // Add an event listener for the beforeunload event
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -87,8 +89,32 @@ const  handleBeforeUnload=(event) =>{
     console.error(error);
   });
       setTyping(true);
+    
  }
+ const getLocation = () => {
+  navigator.geolocation.getCurrentPosition((position) => {
+    setLocation({
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude,
+    });
+  });
+};
 
+const sendLocationToBackend = () => {
+  if (location) {
+    axios.post("http://34.136.104.12:8000/api/location", {
+      lat: 6.4567759,
+      lon: 3.4705936,
+    })
+    .then((response) => {
+      console.log(response.data);
+      // Do something with the returned data
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+};
   return (
     <div className="">
       <div className="header">
@@ -98,6 +124,10 @@ const  handleBeforeUnload=(event) =>{
       <p style={{ textAlign: "center" }}>
       Boost Your Spirit with the Cheer Bot Chatbot: Your Personal Cheerleader
         </p>
+    </div>
+    <div>
+      <button onClick={getLocation}>Get Location</button>
+      <button onClick={sendLocationToBackend}>Send Location</button>
     </div>
       <div className="wrapper">
         <div className="box">
