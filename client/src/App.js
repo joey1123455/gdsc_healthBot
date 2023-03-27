@@ -1,5 +1,5 @@
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import {  useState, useEffect, useRef } from "react";
+import {  useState, useEffect } from "react";
 import Swal from 'sweetalert2'
 import axios from 'axios';
 import {
@@ -16,12 +16,6 @@ function App() {
 
   const [typing, setTyping] = useState(false);
 
-  const refreshButtonRef = useRef(null);
-
-  const handleRefresh= () => {
-    setMessages([]);
-  }
-
    useEffect(() => {
     // Add an event listener for the beforeunload event
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -34,8 +28,11 @@ function App() {
   },
   []);
 
+  const clearChats= () => {
+    setMessages([]);
+  }
 const  handleBeforeUnload=(event) =>{
-
+  event.preventDefault();
   Swal.fire({
     title: 'We respect your privacy, if you refresh this page all chat history will be cleared. Refresh?',
     text: "You won't be able to revert this!",
@@ -46,7 +43,8 @@ const  handleBeforeUnload=(event) =>{
     confirmButtonText: 'Yes, delete it!'
   }).then((result) => {
     if (result.isConfirmed) {
-      handleRefresh()
+      clearChats();
+      window.removeEventListener("beforeunload", handleBeforeUnload);
       Swal.fire(
         'Deleted!',
         'Your Chats has been deleted.',
@@ -54,13 +52,9 @@ const  handleBeforeUnload=(event) =>{
       )
     }
   })
-
- 
-    // Call the click method on the refresh button to trigger a refresh
-    refreshButtonRef.current.click();
   }
 
-  const apiUrl="http://34.136.104.12:8000/api"
+  const apiUrl="http://34.136.104.12:8000/api/"
  const handleSubmit= async (messageText) => {
   axios.post(apiUrl, { msg: messageText }, { mode: 'no-cors' })
  
@@ -97,9 +91,12 @@ const  handleBeforeUnload=(event) =>{
   return (
     <div className="">
       <div className="header">
-        <p style={{ textAlign: "center" }}>Cheer Bot😃</p>
+        <p style={{ textAlign: "center" }}>The Cheer Bot😃</p>
       </div>
       <div>
+      <p style={{ textAlign: "center" }}>
+      Boost Your Spirit with the Cheer Bot Chatbot: Your Personal Cheerleader
+        </p>
     </div>
       <div className="wrapper">
         <div className="box">
