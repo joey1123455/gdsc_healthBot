@@ -36,7 +36,7 @@ function App() {
     const handleBeforeUnload = (event) => {
       if (!confirmReload) {
         event.preventDefault();
-        event.returnValue = '';
+        event.returnValue = "";
         Swal.fire({
           title:
             "We respect your privacy, if you refresh this page all chat history will be cleared. Refresh?",
@@ -48,17 +48,17 @@ function App() {
           confirmButtonText: "Yes, delete it!",
         }).then((result) => {
           if (result.isConfirmed) {
-            setConfirmReload(true)
+            setConfirmReload(true);
             Swal.fire("Deleted!", "Your Chats has been deleted.", "success");
           }
         });
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [confirmReload]);
 
@@ -69,7 +69,7 @@ function App() {
   }, [confirmReload]);
 
   // Send message to backend and add response to chat history
-  const apiUrl = "http://34.136.104.12/api/";
+  const apiUrl = "https://cheerbot.dev/api/";
   const handleSubmit = async (messageText) => {
     axios
       .post(apiUrl, { msg: messageText }, { mode: "no-cors" })
@@ -162,7 +162,7 @@ function App() {
       maxWidth: "80%",
       maxHeight: "80%",
       overflow: "auto",
-      borderRadius: "5px",
+      borderRadius: "30px",
       outline: "none",
       padding: "20px",
     },
@@ -175,8 +175,7 @@ function App() {
       </div>
       <div>
         <p style={{ textAlign: "center" }}>
-          Boost Your Spirit with the CheerBot : Your Personal
-          Cheerleader
+          Boost Your Spirit with the CheerBot : Your Personal Cheerleader
         </p>
       </div>
       <div>
@@ -205,7 +204,7 @@ function App() {
                   ))}
                 </MessageList>
                 <MessageInput
-                attachButton={false}
+                  attachButton={false}
                   placeholder="Enter message"
                   onSend={handleSubmit}
                 />
@@ -222,6 +221,8 @@ function App() {
 
                     <div>
                       {Object.keys(responseData.list).map((key) => {
+                        const isClosed =
+                          responseData.list[key].open === "Closed at this time";
                         return (
                           <div className="border-gray-300 py-9 border-b-4">
                             <p className="font-bold text-xl mb-2">
@@ -245,7 +246,11 @@ function App() {
                             <p className="font-bold text-xl mt-4 mb-2">
                               <i className="far fa-clock"></i> Availability:
                             </p>
-                            <p className="text-lg">
+                            <p
+                              className={`text-lg ${
+                                isClosed ? "text-blue-500" : "text-red-500"
+                              }`}
+                            >
                               {responseData.list[key].open}
                             </p>
                           </div>
